@@ -4,10 +4,18 @@ import java.util.ArrayList;
 import javax.swing.plaf.synth.SynthViewportUI;
 
 public class Habilidades {
- 
+ public static final String RECUPERACAO = "recuperacao", 
+         FORTIFICAR = "fortificar",
+         BOLADEFOGO = "boladefogo",
+         BOLADEFOGODRACONICA="boladefogodraconica",
+         CORTELAMINAR="cortelaminar",
+         ATAQUEBRUTAL="ataquebrutal",
+         DRENARATAQUE="dranarataque";
+    
+    
     public static String recuperacao(Personagem agente, Personagem alvo){
         if (agente.getDEF() < 1) {
-            return agente.getNome() + " não tem defesa o suficiente pode ativar essa habilidade";
+            return agente.getNome() + " não tem defesa o suficiente pode ativar a recuperação";
         }
         agente.setDEF(agente.getDEF() - 1);
         String mensagem = "algo deu errado";
@@ -20,7 +28,7 @@ public class Habilidades {
     public static String fortificar(Personagem agente, Personagem alvo){
 
         if (agente.getDEF() < 1 || agente.getATK() < 1) {
-            return agente.getNome() + " não tem a defesa ou o ataque necessario para ativar essa habilidade";
+            return agente.getNome() + " não tem a defesa ou o ataque necessario para fortificar "+alvo.getNome();
         }
         agente.setDEF(agente.getDEF() - 1);
         agente.setATK(agente.getATK() -1);
@@ -44,7 +52,7 @@ public class Habilidades {
 public static String bolaDeFogo(Personagem agente, ArrayList<Personagem> alvo) {
 
     if (agente.getATK() < 2) {
-        return agente.getNome() + " não tem ataque o suficiente para ativar essa habilidade";
+        return agente.getNome() + " não tem ataque o suficiente para ativar a bola de fogo";
     }
     agente.setATK(agente.getATK() - 2);
     String mensagem = "";
@@ -73,7 +81,7 @@ public static String bolaDeFogo(Personagem agente, ArrayList<Personagem> alvo) {
 public static String bolaDeFogoDraconica(Personagem agente, ArrayList<Personagem> alvo) {
 
     if (agente.getATK() < 2) {
-        return agente.getNome() + " não tem ataque o suficiente para ativar essa habilidade";
+        return agente.getNome() + " não tem ataque o suficiente para ativar a poderosa bola de fogo draconica";
     }
     agente.setATK(agente.getATK() - 2);
     String mensagem = "";
@@ -107,7 +115,7 @@ public static String bolaDeFogoDraconica(Personagem agente, ArrayList<Personagem
     public static String corteLaminar(Personagem agente, Personagem alvo) {
         //reduzir o atk do agente em 1 como custo.
         if (agente.getATK() < 1) {
-            return "O personagem não tem ataque o suficiente para ativar essa habilidade";
+            return "O personagem não tem ataque o suficiente para ativar o corte laminar";
         }
         agente.setATK(agente.getATK() - 1);
         String mensagem = "algo deu errado";
@@ -134,7 +142,7 @@ public static String bolaDeFogoDraconica(Personagem agente, ArrayList<Personagem
         //reduzir o atk do agente em 1 como custo.
         
         if (agente.getATK() < 2 || agente.getDEF() < 1) {
-            return agente.getNome() + "tem ataque ou defesa o suficiente para ativar essa habilidade";
+            return agente.getNome() + "não tem o ataque ou a defesa o suficiente para ativar o ataque brutal";
         }
         agente.setATK(agente.getATK() - 2);
         agente.setDEF(agente.getDEF() - 1);
@@ -169,7 +177,7 @@ public static String bolaDeFogoDraconica(Personagem agente, ArrayList<Personagem
     
         public static String drenarAtaque(Personagem agente, Personagem alvo){
             if (agente.getDEF() < 2){
-                return agente.getNome() + " não tem defesa o suficiente para usar essa habilidade";
+                return agente.getNome() + " não tem defesa o suficiente para drenar o ataque de: "+alvo.getNome();
             }
             
             agente.setDEF(agente.getDEF() - 2);
@@ -201,13 +209,13 @@ public static String bolaDeFogoDraconica(Personagem agente, ArrayList<Personagem
     public String geraDescricao(String habilidade){
         
         String descricao = switch (habilidade) {
-            case "recuperacao" -> recuperarDescricao();
-            case "cortelaminar" -> corteLaminarDesc();
-            case "boladefogo" -> boladefogoDesc();
-            case "fortificar" -> fortificarDesc();
-            case "ataquebrutal" -> ataqueBrutalDesc();
-            case "drenarataque" -> drenarAtaqueDesc();
-            case "boladefogodraconica" -> bolaDefogoDraconicaDesc();
+            case Habilidades.RECUPERACAO -> recuperarDescricao();
+            case Habilidades.CORTELAMINAR -> corteLaminarDesc();
+            case Habilidades.BOLADEFOGO -> boladefogoDesc();
+            case Habilidades.FORTIFICAR -> fortificarDesc();
+            case Habilidades.ATAQUEBRUTAL -> ataqueBrutalDesc();
+            case Habilidades.DRENARATAQUE -> drenarAtaqueDesc();
+            case Habilidades.BOLADEFOGODRACONICA -> bolaDefogoDraconicaDesc();
             default -> "habilidade incorreta";
         };
         return descricao;

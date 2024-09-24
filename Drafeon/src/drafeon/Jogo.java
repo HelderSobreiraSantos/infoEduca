@@ -20,7 +20,7 @@ public class Jogo extends JFrame {
     private JLabel textoCreditos;
     private JLabel textoJogo, textoBatalha;
     private JTextField inputBatalha;
-    private JButton botaoJogo,botaoBatalha;
+    private JButton botaoJogo,botaoBatalha, botaoPassarOTurno;
     // Array de textos para serem mostrados
 private ArrayList<String> textos = new ArrayList<String>(); 
 // Variável para rastrear o índice do texto atual
@@ -59,7 +59,8 @@ private int fase = 1;
         JButton botaoCreditos = criarBotao("Créditos");
         JButton botaoSair = criarBotao("Sair");
         this.botaoJogo = criarBotao("Próximo");
-        this.botaoBatalha = botaoEnviar("Enviar");
+        this.botaoBatalha = botaoEnviar("Enviar",40);
+        this.botaoPassarOTurno = botaoEnviar(transformarEmHTML("Passar Turno"),20);
         // Adicionando os botões ao painel em orientação vertical
         JPanel painelBotoes = new JPanel();
         painelBotoes.setLayout(new GridLayout(3, 1, 10, 10)); // Grade com 3 linhas e espaçamento de 10px
@@ -105,8 +106,11 @@ private int fase = 1;
         painelJogo.add(botaoJogo,BorderLayout.SOUTH);
         
         // ------------------------ Painel Iniciar Batalha---------------------------------------------------------------------------------------------
-        inputBatalha = new JTextField(20);
+        
         painelBatalha = new JPanel();
+        inputBatalha = new JTextField(20);
+        inputBatalha.setSize(20, 40);
+       
         painelBatalha.setLayout(new BorderLayout());
         painelBatalha.setBackground(Color.BLACK);
         
@@ -114,11 +118,18 @@ private int fase = 1;
         textoBatalha.setFont(obterFonte("VCR_OSD_MONO_1.001", Font.BOLD, 16)); // Aplica a fonte personalizada inicialmente
         textoBatalha.setForeground(Color.WHITE);
         painelBatalha.add(textoBatalha, BorderLayout.CENTER);
+        
+        
+      
         JPanel div2 = new JPanel();
-        div2.setLayout(new FlowLayout());
-        div2.add(inputBatalha);
-        div2.add(botaoBatalha);
+        div2.setLayout(new BorderLayout(4, 1));
         div2.setBackground(Color.BLACK);
+        div2.setBounds(10, 10, 25, 25);
+       
+        div2.add(botaoPassarOTurno,BorderLayout.WEST);
+        div2.add(inputBatalha,BorderLayout.CENTER);
+        div2.add(botaoBatalha,BorderLayout.EAST);
+        
         painelBatalha.add(div2,BorderLayout.SOUTH);
 
         // Adicionando Painéis ao CardLayout
@@ -142,9 +153,9 @@ private int fase = 1;
         botao.setFocusPainted(false);
         return botao;
     }
-    private JButton botaoEnviar(String texto) {
+    private JButton botaoEnviar(String texto,int tamanho) {
         JButton botao = new JButton(texto);
-        botao.setPreferredSize(new Dimension(100, 40));
+        botao.setPreferredSize(new Dimension(100, tamanho));
         botao.setFont(obterFonte("VCR_OSD_MONO_1.001", Font.BOLD, 16)); // Aplica a fonte personalizada
         botao.setForeground(Color.WHITE);
         botao.setBackground(new Color(70, 70, 70)); // Cor de fundo que se destaca do preto e do branco
@@ -259,6 +270,7 @@ private int fase = 1;
      private void iniciarJogo() {
     cardLayout.show(getContentPane(), "Jogo");
     
+    this.fase = 1;
        
     processarTextosDaHistoria();
     
@@ -286,7 +298,7 @@ private int fase = 1;
             System.out.println(textos.get(this.indiceTextoAtual));
             
         } else {
-            if (this.fase>2) mostrarTelaPrincipal();
+            if (  this.fase < 1 || this.fase>2) mostrarTelaPrincipal();
             else iniciaBatalha();
         }
     });
@@ -304,7 +316,13 @@ private int fase = 1;
        this.indiceTextoAtual = 0;
        this.textos.clear();
        String saida;
-       if (this.fase==1){
+       
+       if (this.fase <1){
+           saida = transformarEmHTML("Os nosso bravos aventureiros não conseguiram alcançar o seu objetivo, mas não se desespere e tente novamente. ");
+           textos.add(saida);
+           processarHistoria();
+       }
+       else if (this.fase==1){
            saida = transformarEmHTML("Três aventureiros se preparam para adentrar a perigosa masmorra antiga, prontos para buscar conhecimentos ancestrais. O robusto guerreiro, trajando uma armadura, o misterioso mago, envolto em um capuz e a valorosa clériga, vestindo robes.");
            textos.add(saida);
            saida = transformarEmHTML("O grupo entra nas ruínas obscuras, observando os grandes salões esculpidos em pedra com a iluminação fraca de uma tocha. Três espectros surgem, tomando a forma de um cavaleiro negro, um necromante e um feiticeiro, compostos de sombras, se posicionando ameaçadoramente.");
@@ -346,7 +364,7 @@ private int fase = 1;
      
    private void iniciaBatalha() {
     cardLayout.show(getContentPane(), "Batalha");
-    textoBatalha.setFont(obterFonte("VCR_OSD_MONO_1.001", Font.BOLD, 16));
+    textoBatalha.setFont(obterFonte("VCR_OSD_MONO_1.001", Font.BOLD, 15));
     textoBatalha.setText("Que a Batalha Comece!");
     
     boolean ehFase1 = this.fase==1;
@@ -365,19 +383,17 @@ private int fase = 1;
         timerBatalha.start();
     });
     
-    textoBatalha.addMouseListener(new MouseAdapter() {
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            // Retoma o turno após o jogador clicar no texto
-            timerBatalha.start();
-        }
-    });    
+    
+    botaoPassarOTurno.addActionListener(e -> {
+      timerBatalha.start();
+    });
+      
     
     timerBatalha.addActionListener(e -> {
         Iniciativa.proximo();
         Personagem p = Iniciativa.getAtual();
         System.out.println("Turno de: " + p.getNome() + " | Eh inimigo? " + p.getEhInimigo());
-
+        
         Habilidades habilidades = new Habilidades();
         // Verifica se é o turno do jogador
         if (!Iniciativa.getAtual().getEhInimigo()) {
@@ -396,6 +412,12 @@ private int fase = 1;
                 saida += ""+inimigo.getNome()+" ";
             }
             saida += "</p>";
+            saida+= "<br>";
+            saida += "<p>  Aliados: ";
+            for (Personagem aliado : CampoDeBatalha.getAliados()){
+                saida += ""+aliado.getNome().toLowerCase()+" ";
+            }
+            saida += "</p>";
             
             textoBatalha.setText("<html>"+saida+"</html>");
         } else {
@@ -406,15 +428,23 @@ private int fase = 1;
         }
 
         // Verifica se a batalha acabou
-        if (CampoDeBatalha.getAliados().isEmpty() || CampoDeBatalha.getInimigos().isEmpty()) {
+        if ( CampoDeBatalha.getInimigos().isEmpty()) {
             ((Timer) e.getSource()).stop();  // Para o timer quando a batalha termina
             textoBatalha.setText("A batalha terminou!");
             
-            
+            CampoDeBatalha.getAliados().clear();
 
             this.fase ++;
             processarTextosDaHistoria();
             // Retorna para o fluxo de história
+        }
+        else if(CampoDeBatalha.getAliados().isEmpty()){
+            
+            ((Timer) e.getSource()).stop();  // Para o timer quando a batalha termina
+            textoBatalha.setText("A batalha terminou!");
+            
+            this.fase = 0;
+            processarTextosDaHistoria();
         }
     });
 
