@@ -20,7 +20,8 @@ public class Jogo extends JFrame {
     private JLabel textoCreditos;
     private JLabel textoJogo, textoBatalha;
     private JTextField inputBatalha;
-    private JButton botaoJogo,botaoBatalha;
+    private JButton botaoJogo,botaoBatalha, botaoPassarOTurno;
+    private boolean acabou = false;
     // Array de textos para serem mostrados
 private ArrayList<String> textos = new ArrayList<String>(); 
 // Variável para rastrear o índice do texto atual
@@ -59,7 +60,8 @@ private int fase = 1;
         JButton botaoCreditos = criarBotao("Créditos");
         JButton botaoSair = criarBotao("Sair");
         this.botaoJogo = criarBotao("Próximo");
-        this.botaoBatalha = botaoEnviar("Enviar");
+        this.botaoBatalha = botaoEnviar("Enviar",40);
+        this.botaoPassarOTurno = botaoEnviar(transformarEmHTML("Próximo"),20);
         // Adicionando os botões ao painel em orientação vertical
         JPanel painelBotoes = new JPanel();
         painelBotoes.setLayout(new GridLayout(3, 1, 10, 10)); // Grade com 3 linhas e espaçamento de 10px
@@ -105,8 +107,11 @@ private int fase = 1;
         painelJogo.add(botaoJogo,BorderLayout.SOUTH);
         
         // ------------------------ Painel Iniciar Batalha---------------------------------------------------------------------------------------------
-        inputBatalha = new JTextField(20);
+        
         painelBatalha = new JPanel();
+        inputBatalha = new JTextField(20);
+        inputBatalha.setSize(20, 40);
+       
         painelBatalha.setLayout(new BorderLayout());
         painelBatalha.setBackground(Color.BLACK);
         
@@ -114,11 +119,18 @@ private int fase = 1;
         textoBatalha.setFont(obterFonte("VCR_OSD_MONO_1.001", Font.BOLD, 16)); // Aplica a fonte personalizada inicialmente
         textoBatalha.setForeground(Color.WHITE);
         painelBatalha.add(textoBatalha, BorderLayout.CENTER);
+        
+        
+      
         JPanel div2 = new JPanel();
-        div2.setLayout(new FlowLayout());
-        div2.add(inputBatalha);
-        div2.add(botaoBatalha);
+        div2.setLayout(new BorderLayout(4, 1));
         div2.setBackground(Color.BLACK);
+        div2.setBounds(10, 10, 25, 25);
+       
+        div2.add(botaoPassarOTurno,BorderLayout.WEST);
+        div2.add(inputBatalha,BorderLayout.CENTER);
+        div2.add(botaoBatalha,BorderLayout.EAST);
+        
         painelBatalha.add(div2,BorderLayout.SOUTH);
 
         // Adicionando Painéis ao CardLayout
@@ -131,6 +143,24 @@ private int fase = 1;
 
         // Iniciar a animação de créditos ao iniciar o jogo
         iniciarAnimacaoCreditos();
+        
+        
+        //action listener botões de ação
+        
+        botaoJogo.addActionListener(e -> {
+        // Verifica se ainda há mais textos para mostrar
+        if (indiceTextoAtual < textos.size() - 1) {
+            indiceTextoAtual+=1; // Avança para o próximo texto
+
+            // Atualiza o texto na tela
+            textoJogo.setText(textos.get(this.indiceTextoAtual));
+            System.out.println("dentro do if: "+textos.get(this.indiceTextoAtual));
+            
+        } else {
+            if (  this.fase < 1 || this.fase>2) mostrarTelaPrincipal();
+            else iniciaBatalha();
+        }
+    });
     }
 
     private JButton criarBotao(String texto) {
@@ -142,9 +172,9 @@ private int fase = 1;
         botao.setFocusPainted(false);
         return botao;
     }
-    private JButton botaoEnviar(String texto) {
+    private JButton botaoEnviar(String texto,int tamanho) {
         JButton botao = new JButton(texto);
-        botao.setPreferredSize(new Dimension(100, 40));
+        botao.setPreferredSize(new Dimension(100, tamanho));
         botao.setFont(obterFonte("VCR_OSD_MONO_1.001", Font.BOLD, 16)); // Aplica a fonte personalizada
         botao.setForeground(Color.WHITE);
         botao.setBackground(new Color(70, 70, 70)); // Cor de fundo que se destaca do preto e do branco
@@ -259,6 +289,7 @@ private int fase = 1;
      private void iniciarJogo() {
     cardLayout.show(getContentPane(), "Jogo");
     
+    this.fase = 1;
        
     processarTextosDaHistoria();
     
@@ -269,27 +300,14 @@ private int fase = 1;
      private void processarHistoria(){
          cardLayout.show(getContentPane(), "Jogo");
         
-         System.out.println(textos.get(this.indiceTextoAtual));
+         System.out.println("pre if: "+textos.get(this.indiceTextoAtual));
          System.out.println(textos.size());
         // Define o texto inicial
             textoJogo.setFont(obterFonte("VCR_OSD_MONO_1.001", Font.BOLD, 16)); // Aplica a fonte personalizada
             textoJogo.setText(textos.get(indiceTextoAtual));
             
             // Adiciona o listener ao botão "Enviar"
-            botaoJogo.addActionListener(e -> {
-        // Verifica se ainda há mais textos para mostrar
-        if (indiceTextoAtual < textos.size() - 1) {
-            indiceTextoAtual+=1; // Avança para o próximo texto
-
-            // Atualiza o texto na tela
-            textoJogo.setText(textos.get(this.indiceTextoAtual));
-            System.out.println(textos.get(this.indiceTextoAtual));
             
-        } else {
-            if (this.fase>2) mostrarTelaPrincipal();
-            else iniciaBatalha();
-        }
-    });
    }
    
      
@@ -304,7 +322,13 @@ private int fase = 1;
        this.indiceTextoAtual = 0;
        this.textos.clear();
        String saida;
-       if (this.fase==1){
+       
+       if (this.fase <1){
+           saida = transformarEmHTML("Os nosso bravos aventureiros não conseguiram alcançar o seu objetivo, mas não se desespere e tente novamente. ");
+           textos.add(saida);
+           processarHistoria();
+       }
+       else if (this.fase==1){
            saida = transformarEmHTML("Três aventureiros se preparam para adentrar a perigosa masmorra antiga, prontos para buscar conhecimentos ancestrais. O robusto guerreiro, trajando uma armadura, o misterioso mago, envolto em um capuz e a valorosa clériga, vestindo robes.");
            textos.add(saida);
            saida = transformarEmHTML("O grupo entra nas ruínas obscuras, observando os grandes salões esculpidos em pedra com a iluminação fraca de uma tocha. Três espectros surgem, tomando a forma de um cavaleiro negro, um necromante e um feiticeiro, compostos de sombras, se posicionando ameaçadoramente.");
@@ -344,83 +368,103 @@ private int fase = 1;
        
    }
      
-   private void iniciaBatalha() {
+private void iniciaBatalha() {
     cardLayout.show(getContentPane(), "Batalha");
-    textoBatalha.setFont(obterFonte("VCR_OSD_MONO_1.001", Font.BOLD, 16));
+    textoBatalha.setFont(obterFonte("VCR_OSD_MONO_1.001", Font.BOLD, 15));
     textoBatalha.setText("Que a Batalha Comece!");
-    
-    boolean ehFase1 = this.fase==1;
-    System.out.println("é a fase 1: "+ehFase1);
-    
+
+    boolean ehFase1 = this.fase == 1;
+    this.acabou = false;
+    System.out.println("é a fase 1: " + ehFase1);
+
     Batalha batalha = new Batalha(ehFase1);
     Personagem atual = Iniciativa.getAtual();
 
     Timer timerBatalha = new Timer(1000, null); // Cria o timer sem ação inicial
 
-    botaoBatalha.addActionListener(e -> {
-        String input = inputBatalha.getText().toLowerCase(); // Processa o input do jogador
-        processarInputBatalha(Iniciativa.getAtual().getNome(), input); // Processa a ação do jogador
+    // Listener para o botão "botaoBatalha" (adicionado apenas uma vez)
+    if (botaoBatalha.getActionListeners().length == 0) {
+        botaoBatalha.addActionListener(e -> {
+            if (acabou) {
+                processarTextosDaHistoria();
+            } else {
+                String input = inputBatalha.getText().toLowerCase(); // Processa o input do jogador
+                processarInputBatalha(Iniciativa.getAtual().getNome(), input); // Processa a ação do jogador
+                //timerBatalha.start(); // Retoma o timer para continuar o loop
+            }
+        });
+    }
 
-        // Após processar o input do jogador, retoma o timer para continuar o loop
-        timerBatalha.start();
-    });
-    
-    textoBatalha.addMouseListener(new MouseAdapter() {
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            // Retoma o turno após o jogador clicar no texto
-            timerBatalha.start();
-        }
-    });    
-    
+    // Listener para o botão "botaoPassarOTurno" (adicionado apenas uma vez)
+    if (botaoPassarOTurno.getActionListeners().length == 0) {
+        botaoPassarOTurno.addActionListener(e -> {
+            if (acabou) {
+                processarTextosDaHistoria();
+            } else {
+                timerBatalha.start(); // Retoma o timer
+            }
+        });
+    }
+
+    // Ação do Timer da batalha
     timerBatalha.addActionListener(e -> {
         Iniciativa.proximo();
         Personagem p = Iniciativa.getAtual();
-        System.out.println("Turno de: " + p.getNome() + " | Eh inimigo? " + p.getEhInimigo());
+        System.out.println("Turno de: " + p.getNome() + " | É inimigo? " + p.getEhInimigo());
 
         Habilidades habilidades = new Habilidades();
-        // Verifica se é o turno do jogador
-        if (!Iniciativa.getAtual().getEhInimigo()) {
+
+        if (!p.getEhInimigo()) {
             // Pausa o timer para esperar a ação do jogador
-            timerBatalha.stop();  // Espera o input do jogador no listener do botão
+            timerBatalha.stop(); // Espera o input do jogador no listener do botão
 
-
-            String saida="<p>Turna do(a) "+p.getNome()  + " HP: "+ p.getHP() + " ATK: " + p.getATK() + " DEF: "+p.getDEF() + "<br>Habilidades: </p>";
-           
-            for (String s : p.getHabilidades()){
-                saida+= "<p>" + s + ": " +habilidades.geraDescricao(s)+".</p><hr>";
+            // Atualiza o texto da batalha com as informações do personagem
+            String saida = "<p>Turno do(a) " + p.getNome() + " HP: " + p.getHP() + " ATK: " + p.getATK() + " DEF: " + p.getDEF() + "<br>Habilidades: </p>";
+            for (String s : p.getHabilidades()) {
+                saida += "<p>" + s + ": " + habilidades.geraDescricao(s) + ".</p><hr>";
             }
-            
+
+            // Mostra os inimigos
             saida += "<p>  Inimigos: ";
-            for (Personagem inimigo : CampoDeBatalha.getInimigos()){
-                saida += ""+inimigo.getNome()+" ";
+            for (Personagem inimigo : CampoDeBatalha.getInimigos()) {
+                saida += inimigo.getNome() + " ";
+            }
+            saida += "</p><br><p>  Aliados: ";
+            for (Personagem aliado : CampoDeBatalha.getAliados()) {
+                saida += aliado.getNome().toLowerCase() + " ";
             }
             saida += "</p>";
-            
-            textoBatalha.setText("<html>"+saida+"</html>");
+
+            textoBatalha.setText("<html>" + saida + "</html>");
+
         } else {
             // IA do inimigo age
-            IaDoInimigo agir = new IaDoInimigo(Iniciativa.getAtual());
-            textoBatalha.setText("<html><p>" + agir.getMensagem() + "</p></html>");
-            timerBatalha.stop();
+            IaDoInimigo agir = new IaDoInimigo(p);
+            textoBatalha.setText(transformarEmHTML(agir.getMensagem()));
+            timerBatalha.stop(); // Aguarda próximo turno
         }
 
-        // Verifica se a batalha acabou
-        if (CampoDeBatalha.getAliados().isEmpty() || CampoDeBatalha.getInimigos().isEmpty()) {
-            ((Timer) e.getSource()).stop();  // Para o timer quando a batalha termina
+        // Verifica se a batalha terminou
+        if (CampoDeBatalha.getInimigos().isEmpty()) {
+            timerBatalha.stop();
             textoBatalha.setText("A batalha terminou!");
-            
-            
-
-            this.fase ++;
-            processarTextosDaHistoria();
-            // Retorna para o fluxo de história
+            CampoDeBatalha.getAliados().clear();
+            Iniciativa.getOrdem().clear();
+            this.fase++;
+            this.acabou = true;
+            processarTextosDaHistoria(); // Avança para o próximo fluxo da história
+        } else if (CampoDeBatalha.getAliados().isEmpty()) {
+            timerBatalha.stop();
+            textoBatalha.setText("A batalha terminou!");
+            this.fase = 0;
+            this.acabou = true;
+            processarTextosDaHistoria(); // Reinicia história ao perder
         }
     });
 
-    timerBatalha.start(); // Inicia o timer para processar a batalha
+    // Inicia o timer da batalha
+    timerBatalha.start();
 }
-
 
 // Processa o input do jogador
 private void processarInputBatalha(String nome,String input) {

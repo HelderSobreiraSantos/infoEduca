@@ -39,30 +39,28 @@ public class Interpretador {
         if (quantidadeDePalavras == 1) {
             //chama todos os métodos chamados por uma palavra
             if (palavra1.equalsIgnoreCase("ajuda") || palavra1.equalsIgnoreCase("help")) {
-                ajuda();
+                this.mensagem = ajuda();
             }
 
         } else if (quantidadeDePalavras == 2) {
-if (palavra2.equalsIgnoreCase("boladefogo")){
+if (palavra2.equalsIgnoreCase(Habilidades.BOLADEFOGO)){
     this.mensagem = chamaBoladefogo(palavra1, palavra2);
-} else if (palavra2.equalsIgnoreCase("boladefogodraconica")){
-    this.mensagem = chamaBoladefogoDraconica(palavra1, palavra2);
 }
             //chama todos os métodos chamados por três palavras
         } else if (quantidadeDePalavras == 3) {
-            if (palavra2.equalsIgnoreCase("cortelaminar")) {
+            if (palavra2.equalsIgnoreCase(Habilidades.CORTELAMINAR)) {
                 this.mensagem = chamaCorteLaminar(palavra1, palavra3, palavra2);
             
-            }else if (palavra2.equalsIgnoreCase("recuperacao")) {
+            }else if (palavra2.equalsIgnoreCase(Habilidades.RECUPERACAO)) {
                 this.mensagem = chamaRecuperacao(palavra1, palavra3, palavra2);
             
 
-        } else if (palavra2.equalsIgnoreCase("ataquebrutal")){
+        } else if (palavra2.equalsIgnoreCase(Habilidades.ATAQUEBRUTAL)){
                 this.mensagem = chamaAtaquebrutal(palavra1, palavra3, palavra2);
-        } else if (palavra2.equalsIgnoreCase("fortificar")) {
+        } else if (palavra2.equalsIgnoreCase(Habilidades.FORTIFICAR)) {
                 this.mensagem = chamaFortificar(palavra1, palavra3, palavra2);
         }
-        else if (palavra2.equalsIgnoreCase("drenarataque")){
+        else if (palavra2.equalsIgnoreCase(Habilidades.DRENARATAQUE)){
                 this.mensagem = chamaDrenarAtaque(palavra1, palavra3, palavra2);
         }
          else {
@@ -130,7 +128,8 @@ if (palavra2.equalsIgnoreCase("boladefogo")){
                 return "comando inválido, tente novamente";
             }
         }catch(Exception e){
-            return "deu erro tente novamente".concat(e.toString());
+            System.out.println(e.toString());
+            return "deu erro tente novamente";
         }
     }
 
@@ -150,6 +149,7 @@ public String chamaRecuperacao(String agent, String target, String skill) {
                 return "comando inválido, tente novamente";
             }
         }catch(Exception e){
+            System.out.println(e.toString());
             return "deu erro tente novamente";
         }
     }
@@ -169,30 +169,10 @@ public String chamaRecuperacao(String agent, String target, String skill) {
                 return "comando inválido, tente novamente";
             }
         }catch(Exception e){
-            return "deu erro tente novamente".concat(e.toString());
+            System.out.println(e.toString());
+            return "deu erro tente novamente";
         }
     }
-
-//Método para acionar bola de fogo draconica
-public String chamaBoladefogoDraconica(String agent, String skill) {
-        Object agente;
-        
-        agente = verificarPersonagem(agent, CampoDeBatalha.getAliados());
-        
-        try {
-            boolean verificador = verificaHabilidade((Personagem)agente, skill);
-            if(verificador == true){
-                    String ataque = Habilidades.bolaDeFogo((Personagem)agente, CampoDeBatalha.getInimigos()); 
-                     
-                return ataque;
-            }else{
-                return "comando inválido, tente novamente";
-            }
-        }catch(Exception e){
-            return "deu erro tente novamente".concat(e.toString());
-        }
-    }
-
 
 //Método para acionar ataque brutal
 public String chamaAtaquebrutal(String agent, String target, String skill) {
@@ -211,7 +191,8 @@ public String chamaAtaquebrutal(String agent, String target, String skill) {
                 return "comando inválido, tente novamente";
             }
         }catch(Exception e){
-            return "deu erro tente novamente".concat(e.toString());
+            System.out.println(e.toString());
+            return "deu erro tente novamente";
         }
     }
 
@@ -232,7 +213,8 @@ public String chamaFortificar(String agent, String target, String skill) {
                 return "comando inválido, tente novamente";
             }
         }catch(Exception e){
-            return "deu erro tente novamente ".concat(e.toString());
+            System.out.println(e.toString());
+            return "deu erro tente novamente ";
         }
     }
  public String chamaDrenarAtaque(String agent, String target, String skill) {
@@ -274,7 +256,6 @@ public String chamaFortificar(String agent, String target, String skill) {
         return false; // Se chegou até aqui, a habilidade não foi encontrada
     }
 
-//Método para
 
     //a seguir, método chamados por uma só palavra:
     public String ajuda() {

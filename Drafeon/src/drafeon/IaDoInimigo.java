@@ -10,42 +10,18 @@ public class IaDoInimigo {
     public IaDoInimigo(Personagem agente){
         String acao = escolheAcao(agente);
         
-        if (acao.equals("cortelaminar")){
-            Personagem alvo = escolheAlvo(CampoDeBatalha.getAliados());
-            this.mensagem =  Habilidades.corteLaminar(agente,alvo);
-           
-            
-        }else if (acao.equalsIgnoreCase("recuperacao")){
-            Personagem alvo = escolheAlvo(CampoDeBatalha.getInimigos());
-            this.mensagem =  Habilidades.recuperacao(agente, alvo);
-           
-        } else if (acao.equalsIgnoreCase("cortebrutal")){
-            Personagem alvo = escolheAlvo(CampoDeBatalha.getAliados());
-            this.mensagem =  Habilidades.ataqueBrutal(agente, alvo);
-          
-        }
-            else if (acao.equalsIgnoreCase("boladefogo")){
-                
-                this.mensagem =  Habilidades.bolaDeFogo(agente, CampoDeBatalha.getAliados());
-                
-            }
-            else if (acao.equalsIgnoreCase("boladefogodraconica")){
-                this.mensagem = Habilidades.bolaDeFogoDraconica(agente, CampoDeBatalha.getAliados());
-            }
-            else if (acao.equalsIgnoreCase("drenarataque")){
-                Personagem alvo = escolheAlvo(CampoDeBatalha.getAliados());
-                this.mensagem =  Habilidades.drenarAtaque(agente, alvo);
-             
-            }
-            else if (acao.equalsIgnoreCase("fortificar")){
-                Personagem alvo = escolheAlvo(CampoDeBatalha.getInimigos());
-                this.mensagem = Habilidades.fortificar(agente, alvo);
-               
-            }
+        mensagem = switch (acao) {
+            case Habilidades.RECUPERACAO -> Habilidades.recuperacao(agente,escolheAlvo(CampoDeBatalha.getInimigos()));
+            case Habilidades.CORTELAMINAR -> Habilidades.corteLaminar(agente,escolheAlvo(CampoDeBatalha.getAliados()));
+            case Habilidades.BOLADEFOGO -> Habilidades.bolaDeFogo(agente,CampoDeBatalha.getAliados());
+            case Habilidades.FORTIFICAR -> Habilidades.fortificar(agente,escolheAlvo(CampoDeBatalha.getInimigos()));
+            case Habilidades.ATAQUEBRUTAL -> Habilidades.ataqueBrutal(agente,escolheAlvo(CampoDeBatalha.getAliados()));
+            case Habilidades.DRENARATAQUE -> Habilidades.drenarAtaque(agente,escolheAlvo(CampoDeBatalha.getAliados()));
+            case Habilidades.BOLADEFOGODRACONICA -> Habilidades.bolaDeFogoDraconica(agente,CampoDeBatalha.getAliados());
+            default -> "habilidade incorreta";
+        };
+
         
-        else {
-            this.mensagem = "error";
-        }
    }    
 
     public Personagem escolheAlvo(ArrayList<Personagem> alvos){

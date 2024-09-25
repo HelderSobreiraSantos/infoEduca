@@ -63,7 +63,7 @@ public class Batalha {
             inimigo2.adicionarHabilidade("drenarataque");
             inimigo2.adicionarHabilidade("fortificar");
 
-            inimigo3 = new Personagem("feiticera",1,3,1,true);
+            inimigo3 = new Personagem("feiticera",1,3,0,true);
             inimigo3.adicionarHabilidade("drenarataque");
             inimigo3.adicionarHabilidade("boladefogo");
             }
