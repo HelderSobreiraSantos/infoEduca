@@ -550,6 +550,8 @@ textoBatalha.setText(transformarEmHTML(saida));
 
     private void carregarFontePersonalizada() {
         try {
+            
+            System.out.println(getClass().getClassLoader().getResource("."));
             InputStream fonteStream = getClass().getClassLoader().getResourceAsStream("resources/VCR_OSD_MONO_1.001.ttf");
             if (fonteStream == null) {
                 throw new IOException("Fonte não encontrada");

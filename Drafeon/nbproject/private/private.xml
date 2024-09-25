@@ -3,9 +3,21 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/filho/OneDrive/Documentos/GitHub/infoEduca/Drafeon/src/drafeon/Jogo.java</file>
-            <file>file:/C:/Users/filho/OneDrive/Documentos/GitHub/infoEduca/Drafeon/src/drafeon/Habilidades.java</file>
-            <file>file:/C:/Users/filho/OneDrive/Documentos/GitHub/infoEduca/Drafeon/src/drafeon/IaDoInimigo.java</file>
+            <file>file:/home/isaac/Downloads/infoEduca-main(2)/infoEduca-main/Drafeon/src/drafeon/Jogo.java</file>
+            <file>file:/home/isaac/Downloads/infoEduca-main(2)/infoEduca-main/Drafeon/src/drafeon/historia.txt</file>
+            <file>file:/home/isaac/Downloads/infoEduca-main(2)/infoEduca-main/Drafeon/src/drafeon/Helpers.java</file>
+            <file>file:/home/isaac/Downloads/infoEduca-main(2)/infoEduca-main/Drafeon/src/drafeon/IaDoInimigo.java</file>
+            <file>file:/home/isaac/Downloads/infoEduca-main(2)/infoEduca-main/Drafeon/src/drafeon/PainelBatalha.java</file>
+            <file>file:/home/isaac/Downloads/infoEduca-main(2)/infoEduca-main/Drafeon/src/drafeon/PainelHistoria.java</file>
+            <file>file:/home/isaac/Downloads/infoEduca-main(2)/infoEduca-main/Drafeon/src/drafeon/TextProcessor.java</file>
+            <file>file:/home/isaac/Downloads/infoEduca-main(2)/infoEduca-main/Drafeon/src/Teset.java</file>
+            <file>file:/home/isaac/Downloads/infoEduca-main(2)/infoEduca-main/Drafeon/src/drafeon/Personagem.java</file>
+            <file>file:/home/isaac/Downloads/infoEduca-main(2)/infoEduca-main/Drafeon/src/drafeon/Iniciativa.java</file>
+            <file>file:/home/isaac/Downloads/infoEduca-main(2)/infoEduca-main/Drafeon/src/drafeon/CampoDeBatalha.java</file>
+            <file>file:/home/isaac/Downloads/infoEduca-main(2)/infoEduca-main/Drafeon/src/drafeon/Batalha.java</file>
+            <file>file:/home/isaac/Downloads/infoEduca-main(2)/infoEduca-main/Drafeon/src/drafeon/Teste.java</file>
+            <file>file:/home/isaac/Downloads/infoEduca-main(2)/infoEduca-main/Drafeon/src/drafeon/Habilidades.java</file>
+            <file>file:/home/isaac/Downloads/infoEduca-main(2)/infoEduca-main/Drafeon/src/drafeon/Interpretador.java</file>
         </group>
     </open-files>
 </project-private>
