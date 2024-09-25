@@ -12,15 +12,12 @@ import javax.swing.*;
 
 public class Jogo extends JFrame {
 
-    private JPanel painelPrincipal;
-    private JPanel painelCreditos;
-    private JPanel painelJogo;
-    private JPanel painelBatalha;
+    private JPanel painelPrincipal,painelCreditos,painelJogo,painelBatalha;
     private CardLayout cardLayout;
     private JLabel textoCreditos;
     private JLabel textoJogo, textoBatalha;
     private JTextField inputBatalha;
-    private JButton botaoJogo,botaoBatalha, botaoPassarOTurno;
+    private JButton botaoJogo,botaoBatalha, botaoPassarOTurno, botaoTutorial;
     private boolean acabou = false;
     // Array de textos para serem mostrados
 private ArrayList<String> textos = new ArrayList<String>(); 
@@ -59,16 +56,19 @@ private int fase = 1;
         JButton botaoIniciar = criarBotao("Iniciar Jogo");
         JButton botaoCreditos = criarBotao("Créditos");
         JButton botaoSair = criarBotao("Sair");
+        this.botaoTutorial = criarBotao("Tutorial");
         this.botaoJogo = criarBotao("Próximo");
         this.botaoBatalha = botaoEnviar("Enviar",40);
         this.botaoPassarOTurno = botaoEnviar(transformarEmHTML("Próximo"),20);
         // Adicionando os botões ao painel em orientação vertical
         JPanel painelBotoes = new JPanel();
-        painelBotoes.setLayout(new GridLayout(3, 1, 10, 10)); // Grade com 3 linhas e espaçamento de 10px
+        painelBotoes.setLayout(new GridLayout(4, 1, 10, 10)); // Grade com 3 linhas e espaçamento de 10px
         painelBotoes.setBackground(Color.BLACK);
         painelBotoes.add(botaoIniciar);
         painelBotoes.add(botaoCreditos);
+        painelBotoes.add(botaoTutorial);
         painelBotoes.add(botaoSair);
+        
 
         // Criando um painel para centralizar os botões horizontalmente
         JPanel painelCentral = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -80,8 +80,11 @@ private int fase = 1;
         // Adicionando ações aos botões
         botaoIniciar.addActionListener(e -> iniciarJogo());
         botaoCreditos.addActionListener(e -> iniciarAnimacaoCreditos());
+        botaoTutorial.addActionListener( e -> iniciarTutorial());
         botaoSair.addActionListener(e -> System.exit(0));
 
+        
+       
         // Criando o painel de créditos
         painelCreditos = new JPanel();
         painelCreditos.setLayout(new BorderLayout());
@@ -158,7 +161,7 @@ private int fase = 1;
             
         } else {
             if (  this.fase < 1 || this.fase>2) mostrarTelaPrincipal();
-            else iniciaBatalha();
+            else  iniciaBatalha();
         }
     });
     }
@@ -183,6 +186,14 @@ private int fase = 1;
     }
 
 
+    
+    private void iniciarTutorial(){
+        
+        this.fase = 0;
+        
+        processarTextosDaHistoria();
+        
+    }
    
 //---------------Créditos------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     private void iniciarAnimacaoCreditos() {
@@ -323,8 +334,23 @@ private int fase = 1;
        this.textos.clear();
        String saida;
        
-       if (this.fase <1){
+       // Morreu
+       if (this.fase <0){
            saida = transformarEmHTML("Os nosso bravos aventureiros não conseguiram alcançar o seu objetivo, mas não se desespere e tente novamente. ");
+           textos.add(saida);
+           processarHistoria();
+       }
+       // Tutorial
+       else if (this.fase == 0){
+           saida = transformarEmHTML("Quando no turno de um dos seus personagens, atente-se a seus atributos, habilidades e o custo das habilidades, todas essas informações serão exibidas na tela, junto ao nome dos aliadose e dos inimgos na batalha.");
+           textos.add(saida);
+           saida = transformarEmHTML("Digite sempre os comando em minúsculo e tudo junto, mesmo que o comando tenha mais de uma palavra. EX: cortalaminar. as habilidades tem custos e geralmente são usadas em um alvo. ");
+           textos.add(saida);
+           saida = transformarEmHTML("Para usar uma habilidade, certifique-se de que o personagem e questão a tenha e possua os requisitos para ativá-la digite o nome da habilidade em minúsculo, sem espaços, e após um espaço, digite o nome do alvo do mesmo jeito. Clique então em ENVIAR. EX: cortelaminar feiticeiro");
+           textos.add(saida);
+           saida = transformarEmHTML("APENAS APERTE EM ENVIAR PARA USAR UMA HABILIDADE, quando uma descrtição for exibida na tela, clique em PRÓXIMO.");
+           textos.add(saida);
+           saida = transformarEmHTML("Digite ajuda e clique em enviar para ver este texto de tutorial mais uma vez, no turno do seu personagem.");
            textos.add(saida);
            processarHistoria();
        }
@@ -456,7 +482,7 @@ private void iniciaBatalha() {
         } else if (CampoDeBatalha.getAliados().isEmpty()) {
             timerBatalha.stop();
             textoBatalha.setText("A batalha terminou!");
-            this.fase = 0;
+            this.fase = -1;
             this.acabou = true;
             processarTextosDaHistoria(); // Reinicia história ao perder
         }

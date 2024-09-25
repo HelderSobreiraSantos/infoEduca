@@ -9,7 +9,7 @@ public class Habilidades {
          BOLADEFOGODRACONICA="boladefogodraconica",
          CORTELAMINAR="cortelaminar",
          ATAQUEBRUTAL="ataquebrutal",
-         DRENARATAQUE="dranarataque";
+         DRENARATAQUE="drenarataque";
     
     private static String templateAtk(String nome, boolean direto, int valor, Personagem alvo, Personagem agente){
             
