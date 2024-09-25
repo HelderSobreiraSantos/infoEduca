@@ -206,12 +206,12 @@ private int fase = 1;
     textoCreditos.setFont(obterFonte("VCR_OSD_MONO_1.001", Font.BOLD, 16));
 
     //texto em HTML
-    textoCreditos.setText("<html><div style='margin: 0 auto; display:block;'><p style='text-align:center; '>Este jogo foi desenvolvido para a disciplina de Informática na Educação do curso de Sistemas para Internet do IF Sertão Campus Salgueiro.</p></div></html>");
+    textoCreditos.setText(transformarEmHTML("Este jogo foi desenvolvido para a disciplina de Informática na Educação do curso de Sistemas para Internet do IF Sertão Campus Salgueiro."));
 
     // Primeira parte da animação com efeito de esmaecimento
     new Thread(() -> {
         try {
-            Thread.sleep(100);//100 milisegundo
+            Thread.sleep(1000);//100 milisegundo
 
             // Fade in
             for (int i = 0; i <= 100; i++) {
@@ -222,7 +222,11 @@ private int fase = 1;
 
             // Muda para o segundo texto
             textoCreditos.setText(
-                "<html><p style='text-align:center; margin: 0 auto;'>Desenvolvido por Helder Manoel Sobreira Dos Santos, Walla Nascimento de Sousa, Daniel Antônio Da Silva e Isaac Antonio Alves Souza</p></html>"
+                    transformarEmHTML("Desenvolvido por <br>"
+                            + "Helder Santos (Gerente de Projeto) <br> "
+                            + "Walla Nascimento de Sousa (Backend) <br> "
+                            + "Daniel Antônio Da Silva (Backend) <br> "
+                            + "e Isaac Souza (Frontend)") 
             );
 
             // Segundo fade in
@@ -232,7 +236,7 @@ private int fase = 1;
                 Thread.sleep(20);
             }
 
-            Thread.sleep(100); // Espera mais 3 segundos
+            Thread.sleep(3000); // Espera mais 3 segundos
 
             // Terceira parte da animação, exibindo o texto grande
             textoCreditos.setFont(obterFonte("VCR_OSD_MONO_1.001", Font.PLAIN, 5)); // Aplica a fonte personalizada
@@ -282,7 +286,7 @@ private int fase = 1;
                 Thread.sleep(20);
             }
 
-            Thread.sleep(100); // Espera mais 3 segundos
+            Thread.sleep(1000); // Espera mais 3 segundos
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
@@ -411,9 +415,13 @@ private void iniciaBatalha() {
     // Listener para o botão "botaoBatalha" (adicionado apenas uma vez)
     if (botaoBatalha.getActionListeners().length == 0) {
         botaoBatalha.addActionListener(e -> {
+            
             if (acabou) {
                 processarTextosDaHistoria();
             } else {
+                
+                
+                
                 String input = inputBatalha.getText().toLowerCase(); // Processa o input do jogador
                 processarInputBatalha(Iniciativa.getAtual().getNome(), input); // Processa a ação do jogador
                 //timerBatalha.start(); // Retoma o timer para continuar o loop
@@ -496,9 +504,19 @@ private void iniciaBatalha() {
 private void processarInputBatalha(String nome,String input) {
     System.out.println("Nome do agente: "+nome);
     
-    switch(input){
-        case "sair" : System.exit(0); break;
-        default: try {
+    if (input.equalsIgnoreCase("sair")) System.exit(0);
+    else if(input.equalsIgnoreCase("ajuda") || input.equalsIgnoreCase("help") || input.equalsIgnoreCase("tutorial")){
+String saida = "Para usar uma habilidade, certifique-se de que o personagem\n" +
+"e questão a tenha e possua os requisitos para ativá-la, \n" +
+"digite o nome da habilidade em minúsculo, sem espaços, e após\n" +
+"um espaço, digite o nome do alvo do mesmo jeito. Clique então\n" +
+"em ENVIAR. EX: cortelaminar feiticeiro";
+
+textoBatalha.setText(transformarEmHTML(saida));
+    }
+    
+    else{
+       try {
             String saida = nome.toLowerCase() + " "+input;
             System.out.println("entrada para o interpretador: "+saida);
         Interpretador inter = new Interpretador(saida);
@@ -508,7 +526,7 @@ private void processarInputBatalha(String nome,String input) {
         System.out.println("Erro ao processar input: " + e.getMessage());
     }
     }
-   
+
 }
     
 

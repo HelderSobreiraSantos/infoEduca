@@ -68,3 +68,29 @@ meu povo, o pensamento computacional, guie vocês em suas
 futuras aventuras. Lembre-se, a força da espada pode 
 moldar um império, mas a força do conhecimento é capaz de 
 mudar o mundo."
+
+----------------------------------------------------------
+
+Quando no turno de um dos seus personagens, atente-se a seus
+atributos, habilidades e o custo das habilidades, todas essas
+informações serão exibidas na tela, junto ao nome dos aliadose
+e dos inimgos na batalha.
+
+Digite sempre os comando em minúsculo e tudo junto, mesmo que 
+o comando tenha mais de uma palavra. EX: cortalaminar. as 
+habilidades tem custos e geralmente são usadas em um alvo. 
+
+Para usar uma habilidade, certifique-se de que o personagem
+e questão a tenha e possua os requisitos para ativá-la, 
+digite o nome da habilidade em minúsculo, sem espaços, e após
+um espaço, digite o nome do alvo do mesmo jeito. Clique então
+em ENVIAR. EX: cortelaminar feiticeiro
+
+APENAS APERTE EM ENVIAR PARA USAR UMA HABILIDADE, quando 
+uma descrtição for exibida na tela, clique em PRÓXIMO.
+
+Digite ajuda e clique em enviar para ver este texto de tutorial
+mais uma vez, no turno do seu personagem.
+
+
+
