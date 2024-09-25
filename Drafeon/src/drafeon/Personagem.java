@@ -95,8 +95,8 @@ public class Personagem {
         this.habilidades = habilidades;
     }
 
-    public int verificaSetagem(int valor){ //Esse método será substituído por uma verificação para cada set usando o valor total (ex: this.HPTotal)
-        if (this.ehInimigo == true) { 
+    public int verificaSetagem(int valor){
+        if (this.ehInimigo == true) { //lembrar de corrigir isso pra o inimigo não curar infinitamente
             if (valor < 0){
             valor = 0;
         }

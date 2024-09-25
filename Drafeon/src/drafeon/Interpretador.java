@@ -38,7 +38,7 @@ public class Interpretador {
         //designa ação baseada no comando passado pelo jogador
         if (quantidadeDePalavras == 1) {
             //chama todos os métodos chamados por uma palavra
-            if (palavra1.equalsIgnoreCase("ajuda") || palavra1.equalsIgnoreCase("help")) {
+            if (palavra1.equalsIgnoreCase("ajuda") || palavra1.equalsIgnoreCase("help") || palavra1.equalsIgnoreCase("tutorial"))  {
                 this.mensagem = ajuda();
             }
 
@@ -259,7 +259,11 @@ public String chamaFortificar(String agent, String target, String skill) {
 
     //a seguir, método chamados por uma só palavra:
     public String ajuda() {
-        return "Digite sempre tudo em minúsculo e sem acentos \n usar habilidade - (agente nomedahabilidade alvo)";
+        return "Para usar uma habilidade, certifique-se de que o personagem\n" +
+"e questão a tenha e possua os requisitos para ativá-la, \n" +
+"digite o nome da habilidade em minúsculo, sem espaços, e após\n" +
+"um espaço, digite o nome do alvo do mesmo jeito. Clique então\n" +
+"em ENVIAR. EX: cortelaminar feiticeiro";
     
     }
 
