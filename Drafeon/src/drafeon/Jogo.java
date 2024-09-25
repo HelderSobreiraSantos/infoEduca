@@ -14,8 +14,8 @@ public class Jogo extends JFrame {
 
     private JPanel painelPrincipal,painelCreditos,painelJogo,painelBatalha;
     private CardLayout cardLayout;
-    private JLabel textoCreditos;
-    private JLabel textoJogo, textoBatalha;
+    
+    private JLabel textoCreditos,textoJogo, textoBatalha;
     private JTextField inputBatalha;
     private JButton botaoJogo,botaoBatalha, botaoPassarOTurno, botaoTutorial;
     private boolean acabou = false;
@@ -28,7 +28,7 @@ private int fase = 1;
          // Carregar e registrar a fonte personalizada
         carregarFontePersonalizada();
          
-
+        
 
         // Configurações da janela
         setTitle("JOGO");
@@ -47,11 +47,12 @@ private int fase = 1;
         painelPrincipal.setBackground(Color.BLACK);
 
         // Adicionando o título
-        JLabel titulo = new JLabel("Título do Jogo", SwingConstants.CENTER);
+        JLabel titulo = new JLabel(transformarEmHTML("<br>DRAFEON<br>"), SwingConstants.CENTER);
         titulo.setFont(obterFonte("VCR_OSD_MONO_1.001", Font.BOLD, 24)); // Aplica a fonte personalizada
         titulo.setForeground(Color.WHITE);
         painelPrincipal.add(titulo, BorderLayout.NORTH);
-
+        
+        
         // Criando os botões
         JButton botaoIniciar = criarBotao("Iniciar Jogo");
         JButton botaoCreditos = criarBotao("Créditos");
