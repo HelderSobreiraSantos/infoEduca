@@ -40,13 +40,13 @@ public class Habilidades {
         String mensagem = "algo deu errado";
         alvo.setHP(alvo.getATK() + 2);
         if(alvo.getATK()>3) {alvo.setATK(3);}
-        mensagem = "O ataque de: "+alvo.getNome()+ " foi recuperada em 2 ao custo de 1 de defesa e 1 de ataque por "+agente.getNome();
+        mensagem = "O ataque de: "+alvo.getNome()+ " foi recuperada em 2 ao custo de 1 de defesa e 1 de ataque de "+agente.getNome();
         return mensagem;
     }
     
       
         public static String drenarAtaque(Personagem agente, Personagem alvo){
-            if (agente.getDEF() < 2){
+            if (agente.getDEF() < 1){
                 return agente.getNome() + " não tem defesa o suficiente para drenar o ataque de: "+alvo.getNome();
             }
             
@@ -56,7 +56,7 @@ public class Habilidades {
             agente.setATK(agente.getATK() + 1);
             if (alvo.getATK() > 3) alvo.setATK(3);
 
-            return alvo.getNome() + " foi drenado, diminuindo 1 de ataque e "+ agente.getNome() +" ataque aumentou em 1";
+            return alvo.getNome() + " foi drenado, diminuindo 1 de ataque e "+ agente.getNome() +" ataque aumentou em 1 ao custo de 1 de defesa";
         }
     
     public static ArrayList<Personagem> acumularPersonagensMortos(ArrayList<Personagem> alvo) {
@@ -254,7 +254,7 @@ public static String bolaDeFogoDraconica(Personagem agente, ArrayList<Personagem
     }
     
     public String drenarAtaqueDesc(){
-        return "Drena a habilidade o poder de um alvo, removendo 1 ATK dele e recuperando 1 de ATK para si. Custo: 2 de defesa";
+        return "Drena a habilidade o poder de um alvo, removendo 1 ATK dele e recuperando 1 de ATK para si. Custo: 1 de defesa";
     
     }
     public String bolaDefogoDraconicaDesc(){

@@ -13,9 +13,9 @@ public class Batalha {
         //guerreiro: HP - 3, ATK: 2, DEF: 3 (CorteLaminar, AtaqueBrutal)
         //Mago: HP - 1, ATK: 3, DEF: 2 (BolaDeFogo, DrenarAtaque, Fortificar)
         //Cleriga: Hp - 2, ATK: 1, DEF: 3 (Fortificar, Recuperacao, corteLaminar)
-        Personagem aliado1 = new Personagem("Guerreiro",3,3,3, false);
-        Personagem aliado2 = new Personagem("Mago",1,3,2, false);
-        Personagem aliado3 = new Personagem("Cleriga",2,1,3, false);
+        Personagem aliado1 = new Personagem("Guerreiro",3,4,3, false);
+        Personagem aliado2 = new Personagem("Mago",1,4,2, false);
+        Personagem aliado3 = new Personagem("Cleriga",2,3,4, false);
 
         aliado1.adicionarHabilidade(Habilidades.CORTELAMINAR);
         aliado1.adicionarHabilidade(Habilidades.ATAQUEBRUTAL);
@@ -38,34 +38,35 @@ public class Batalha {
     public void geraInimigos(boolean ehFase1){
         Personagem inimigo1,inimigo2,inimigo3;
         if (ehFase1 ){
-        inimigo1 = new Personagem("cavaleironegro",1,5,0,true);
-        inimigo2 = new Personagem("feiticeiro",1,5,0,true); //3,5,2
-        inimigo3 = new Personagem("necromante",1,5,0,true);
+        inimigo1 = new Personagem("ceifador",3,4,2,true);
+        inimigo2 = new Personagem("arcana",1,6,1,true); //3,5,2
+        inimigo3 = new Personagem("necromante",1,4,3,true);
         
         inimigo1.adicionarHabilidade(Habilidades.DRENARATAQUE);
         inimigo1.adicionarHabilidade(Habilidades.ATAQUEBRUTAL);
         inimigo1.adicionarHabilidade(Habilidades.CORTELAMINAR);
 
         inimigo2.adicionarHabilidade(Habilidades.BOLADEFOGO);
-        inimigo2.adicionarHabilidade(Habilidades.DRENARATAQUE);
-        inimigo2.adicionarHabilidade(Habilidades.DRENARATAQUE);
         
         inimigo3.adicionarHabilidade(Habilidades.RECUPERACAO);
-        inimigo3.adicionarHabilidade(Habilidades.FORTIFICAR);
+        inimigo3.adicionarHabilidade(Habilidades.CORTELAMINAR);
         inimigo3.adicionarHabilidade(Habilidades.DRENARATAQUE);
         }
         else {
-            inimigo1 = new Personagem("dragao",1,9,2,true);
+            inimigo1 = new Personagem("dragao",3,10,2,true);
             inimigo1.adicionarHabilidade(Habilidades.BOLADEFOGODRACONICA);
             inimigo1.adicionarHabilidade(Habilidades.ATAQUEBRUTAL);
+            inimigo1.adicionarHabilidade(Habilidades.ATAQUEBRUTAL);
             
-            inimigo2 = new Personagem("bruxa",1,3,1,true);
+            inimigo2 = new Personagem("bruxo",1,3,2,true);
             inimigo2.adicionarHabilidade(Habilidades.DRENARATAQUE);
-            inimigo2.adicionarHabilidade(Habilidades.FORTIFICAR);
+            inimigo2.adicionarHabilidade(Habilidades.DRENARATAQUE);
+            inimigo2.adicionarHabilidade(Habilidades.BOLADEFOGO);
 
-            inimigo3 = new Personagem("feiticera",1,3,1,true);
-            inimigo3.adicionarHabilidade(Habilidades.DRENARATAQUE);
+            inimigo3 = new Personagem("feiticeira",1,5,1,true);
             inimigo3.adicionarHabilidade(Habilidades.BOLADEFOGO);
+            inimigo3.adicionarHabilidade(Habilidades.BOLADEFOGO);
+            inimigo1.adicionarHabilidade(Habilidades.CORTELAMINAR);
             }
         CampoDeBatalha.inserirInimigo(inimigo1);
         CampoDeBatalha.inserirInimigo(inimigo2);
