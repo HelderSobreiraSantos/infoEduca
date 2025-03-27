@@ -32,7 +32,7 @@ public class IaDoInimigo {
     }
 
     //método que recebe o arraylist de habilidades da classe personagem e retorna uma de suas habilidades aleatória:
-    public String escolheAcao(Personagem agente){
+    public String escolheAcao(Personagem agente, int nada){ //basta remover o parametro nada para que o método seja usado
         ArrayList<String> habilidades, habilidadesFiltro;
         habilidades = agente.getHabilidades();
         habilidadesFiltro = new ArrayList<String>();
@@ -81,14 +81,127 @@ public class IaDoInimigo {
         return habilidades.get(escolha);
     }
     
-    //versão anterior sem filtro:
-    //public String escolheAcao(Personagem agente){
-        //ArrayList<String> habilidades;
-        //habilidades = agente.getHabilidades();
-        //int i= r.nextInt(habilidades.size());
+    //a escolha da ação será baseada numa rolagem de D6 e este método aribui bônus a cada opção de ação baseado no estado do campo de batalha
+    public String escolheAcao(Personagem agente){
+        ArrayList<String> habilidades;
+        ArrayList<String> habilidadesFiltro = new ArrayList<String>();
+        habilidades = agente.getHabilidades();
+        Random dado = new Random();
         
-        //return habilidades.get(i);
-    //}
+        //bonus para as rolagens de decisão:
+        int recuperacao = 0;
+        int ataqueBrutal = 0;
+        int bolaDeFogo = 0;
+        int bolaDeFogoDraconica = 0;
+        int corteLaminar = 0;
+        int fortificar = 0;
+        int drenarAtaque = 0;
+        
+        int atk = agente.getATK();
+        int def = agente.getDEF();
+        
+        //filtrando habilidades pelo custo de recursos:
+        for (int i = 0; i < habilidades.size(); i++) {
+            String habilidade = habilidades.get(i);
+
+            // Condições de uso para cada habilidade
+            if (habilidade.equals("recuperacao") && def < 1) {
+                continue;  // Habilidade não pode ser usada, então pula para a próxima
+            }
+            if (habilidade.equals("fortificar") && (def < 1 || atk < 1)) {
+                continue;
+            }
+            if (habilidade.equals("drenarAtaque") && def < 2) {
+                continue;
+            }
+            if (habilidade.equals("bolaDeFogo") && atk < 2) {
+                continue;
+            }
+            if (habilidade.equals("bolaDeFogoDraconica") && def < 2) {
+                continue;
+            }
+            if (habilidade.equals("corteLaminar") && atk < 1) {
+                continue;
+            }
+            if (habilidade.equals("ataqueBrutal") && (atk < 2 || def < 1)) {
+                continue;
+            }
+
+            // Se passou por todas as condições, a habilidade é válida
+            habilidadesFiltro.add(habilidade);
+        }
+        
+        //análise por estado do agente:
+        if (agente.getHP() < 2){ //HP baixo
+            if (agente.getDEF() < 1){ //indefeso - vai fazer o que pode ou tentar um ataque suicida
+                if (agente.getATK() >= 2){
+                    //suicida - vai atacar com tudo
+                    ataqueBrutal = ataqueBrutal + 1;
+                    bolaDeFogo = bolaDeFogo + 1;
+                    bolaDeFogoDraconica = bolaDeFogoDraconica + 1;
+                    corteLaminar = corteLaminar + 1;
+                }
+            } else if (agente.getDEF() < 2){
+                //em risco - vai priorizar a cura
+                recuperacao = recuperacao + 3;
+            }
+        } 
+        if (agente.getATK() <= 1){ //ATK baixo 
+            if (agente.getDEF() >= 1){ 
+                if(agente.getHP() >= 2){ //capaz de se defender - se fortificar
+                    drenarAtaque = drenarAtaque + 3;
+                } 
+                //vulnerável - vai evitar o gasto de recursos
+            }
+        }
+        if (agente.getDEF() <= 1){ //DEF baixa
+            if (agente.getHP() >= 2){ //DEF baixa - vai evitar gastar 
+                recuperacao--; fortificar--; drenarAtaque--;
+            }
+        }
+        if (agente.getATK() >= 2 && agente.getDEF() >= 2){//tudo no talo - usar os ataques mais poderosos
+            recuperacao--; fortificar--; drenarAtaque--;
+            corteLaminar++; bolaDeFogo++; bolaDeFogoDraconica++;
+            if(agente.getATK() >= 3){
+                ataqueBrutal = ataqueBrutal + 2;
+            }
+        }
+        
+        int resultado = 0;
+        int indice = -1;
+        for (int i = 0; i < habilidadesFiltro.size(); i++) {
+            int bonus = 0;
+            int rolagem;
+            
+            if (habilidadesFiltro.get(i).equals("recuperacao")){
+                bonus = recuperacao;
+            }else if (habilidadesFiltro.get(i).equals("ataqueBrutal")){
+                bonus = ataqueBrutal;
+            }else if (habilidadesFiltro.get(i).equals("bolaDeFogo")){
+                bonus = bolaDeFogo;
+            }else if (habilidadesFiltro.get(i).equals("bolaDeFogoDraconica")){
+                bonus = bolaDeFogoDraconica;
+            }else if (habilidadesFiltro.get(i).equals("corteLaminar")){
+                bonus = corteLaminar;
+            }else if (habilidadesFiltro.get(i).equals("fortificar")){
+                bonus = fortificar;
+            }else if (habilidadesFiltro.get(i).equals("drenarAtaque")){
+                bonus = drenarAtaque;
+            }
+            rolagem = dado.nextInt(1, 6) + bonus;
+            if (rolagem > resultado){
+                resultado = rolagem;
+                indice = i;
+            }
+        }
+        if (indice <= -1){
+            indice = dado.nextInt(1, habilidades.size());
+            return habilidades.get(indice);
+        }
+        //int escolha = dado.nextInt(habilidades.size());
+        return habilidadesFiltro.get(indice);
+        
+    }
     
     public String getMensagem(){
         return this.mensagem;

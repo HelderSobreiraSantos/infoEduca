@@ -53,20 +53,20 @@ public class Batalha {
         inimigo3.adicionarHabilidade(Habilidades.DRENARATAQUE);
         }
         else {
-            inimigo1 = new Personagem("dragao",3,10,2,true);
+            inimigo1 = new Personagem("dragao",4,12,2,true);
             inimigo1.adicionarHabilidade(Habilidades.BOLADEFOGODRACONICA);
-            inimigo1.adicionarHabilidade(Habilidades.ATAQUEBRUTAL);
+            inimigo1.adicionarHabilidade(Habilidades.DRENARATAQUE);
             inimigo1.adicionarHabilidade(Habilidades.ATAQUEBRUTAL);
             
-            inimigo2 = new Personagem("bruxo",1,3,2,true);
+            inimigo2 = new Personagem("bruxo",1,4,3,true);
             inimigo2.adicionarHabilidade(Habilidades.DRENARATAQUE);
             inimigo2.adicionarHabilidade(Habilidades.DRENARATAQUE);
             inimigo2.adicionarHabilidade(Habilidades.BOLADEFOGO);
 
-            inimigo3 = new Personagem("feiticeira",1,5,1,true);
+            inimigo3 = new Personagem("feiticeira",1,7,2,true);
             inimigo3.adicionarHabilidade(Habilidades.BOLADEFOGO);
             inimigo3.adicionarHabilidade(Habilidades.BOLADEFOGO);
-            inimigo1.adicionarHabilidade(Habilidades.CORTELAMINAR);
+            inimigo3.adicionarHabilidade(Habilidades.CORTELAMINAR);
             }
         CampoDeBatalha.inserirInimigo(inimigo1);
         CampoDeBatalha.inserirInimigo(inimigo2);
